@@ -21,6 +21,7 @@ $("#submit-button").on("click", function (event) {
         question10: parseInt($("#q10").val())
     };
 
+    //AJAX call
     $.ajax("/api/updatesurvey", {
         type: "PUT",
         data: currentUser,

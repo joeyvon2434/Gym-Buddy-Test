@@ -9,9 +9,7 @@ $(this).on('click', ".profile-button", function() {
         id: $(this).val()
     };
 
-    console.log("match data");
-    console.log(matchId);
-
+    //AJAX call
     $.ajax('/transfer', {
         method: "POST",
         data: matchId,

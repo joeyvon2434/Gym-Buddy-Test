@@ -21,40 +21,29 @@ module.exports = function (app) {
 
   });
 
-  //survey
-  //JVE changing route to be called createnewuser which will redirect to /survey upon adding a new user
+  //survey route
   app.get("/survey", authenticationMiddleware(), function (req, res) {
-
     res.render("survey", {
-
     });
   });
 
-  //return matches when selected
-
+  //Route to show the user thier matches
   app.get("/matches", authenticationMiddleware(), function (req, res) {
-
     var matchesObject = {
       matchesArray: []
     };
-  
 
+    //get id of current user
     var currentUser = req.user;
 
-    //datbse calls to get get current user info, then to get all users to allow looping for comparison algorithm
+    //Sequelize database call for current user
     db.User.findOne({
       where: { id: currentUser }
     }).then(function (userInfo) {
 
-
+      //Sequelize database call for all users
       db.User.findAll({}).then(function (allUsers) {
-
-        //loop to compare each user to the current user and increment the count for matches
-
-
-
-
-        //loop through all users in the database
+        //loop to compare all users to the current user and populate the matches
         for (i = 0; i < allUsers.length; i++) {
           if (currentUser !== allUsers[i].id) {
 
@@ -70,21 +59,17 @@ module.exports = function (app) {
 
             };//close j loop through questions
 
-            //adds match to the user array
+            //adds match to the user array if criteria met
             if (matchCompatibility > 5) {
 
               allUsers[i].compatibility = matchCompatibility;
 
               matchesObject.matchesArray.push(allUsers[i]);
-              //matchesObject.matchScoreArray.push(matchCompatibility);
 
             };//end match compatibility check
           };//end check to ensure user is not compared to their own survey
-
-        };
-
+        }; //close i loop through questions
       }).then(function () {
-
         res.render("matches", matchesObject);
       });
     });
@@ -92,10 +77,7 @@ module.exports = function (app) {
 
   //Route to access individual profiles
   app.get("/profile/:id", authenticationMiddleware(), function (req, res) {
-
-    console.log("Parameters for Profile");
-    console.log(req.params.id);
-
+    //Sequelize databse call for the desired user profile
     db.User.findOne({
       include: [{
         model: db.Review
@@ -104,19 +86,7 @@ module.exports = function (app) {
         id: req.params.id
       }
     }).then(function (dbMatch) {
-
-      console.log(dbMatch);
-
       res.render("profile", dbMatch);
-    });
-
-  });
-
-  //profile and reviews
-  app.get("/matches/:id/profile", function (req, res) {
-    res.render("profile", {
-      // msg: "Welcome!",
-      // examples: workout_db
     });
   });
 
@@ -124,27 +94,18 @@ module.exports = function (app) {
   //add Review
   app.get("/matches/:id/addreview", function (req, res) {
     res.render("addreview", {
-      // msg: "Welcome!",
-      // examples: workout_db
     });
   });
 
-  // // Load example page and pass in an example by id
-  // app.get("/example/:id", function(req, res) {
-  //   db.Example.findOne({ where: { id: req.params.id } }).then(function(dbExample) {
-  //     // res.render("example", {
-  //     //   example: dbExample
-  //     // });
-  //   });
-  // });
 
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
   });
-};
+};// end module.exports
 
-//call this function to allow access only to signed in and authenticated users.
+
+//Authentication check function
 function authenticationMiddleware() {
   return (req, res, next) => {
 

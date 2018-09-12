@@ -9,19 +9,10 @@ var passport = require("passport");
 var db = require("../models");
 
 module.exports = function (app) {
-  // Get all examples
-  app.get("/api/examples", function (req, res) {
-    db.Example.findAll({}).then(function (dbExamples) {
-      res.json(dbExamples);
-    });
-  });
 
-  // Post route to add a new user to the database and send the new user to the survey
-  //The path for this route should match the path for the submit button on the register a new user
+
+  // Post route to add a new user to the database and send the new user to the survey page
   app.post("/api/createnewuser", function (req, res) {
-
-    //read in data from the submission from the registration page
-
 
     //hash the password with bcrypt for secure storage in the databse
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -31,19 +22,16 @@ module.exports = function (app) {
         password: hash
       };
 
-     
-
-      //sequelize send info to database
-      //need to match name to model name, placeholder as user for now
+      //use sequelize to send info to database
       db.User.create(newUser).then(function (dbUser) {
 
         var userId = dbUser.id;
 
         //logs in user if profile creation succeeds
         if (userId) {
-          
+
           req.login(userId, function (err) {
-            var newPath = "/survey"// + "/" +userId //uncomment when individual id paths are ready
+            var newPath = "/survey"
 
             res.json({
               "redirect": true,
@@ -51,18 +39,19 @@ module.exports = function (app) {
             });
           });
         }
-
       });
     });
-  });//end register a user
+  });//end creeate new user route
 
 
-  //This route logs a user in from the login page
+  //Log In route
   app.post("/api/authenticateuser", passport.authenticate("local", {
     successRedirect: '/matches',
     failureRedirect: '/login'
   }));
 
+
+  //Log Out route
   app.get('/logout', function (req, res) {
     req.logout();
     req.session.destroy();
@@ -70,19 +59,23 @@ module.exports = function (app) {
   });
 
 
-  //This route takes the survey submission from the survey page, sends then to the database, then redirects the user to the matches page
+  //This route allows the user to submit their survey results for matching, then directs them to the matches page
   app.put("/api/updatesurvey", authenticationMiddleware(), function (req, res) {
-  
 
+    //pul in survey inputs
     var survey = req.body;
     var currentUser = req.user;
 
+    //database update with sequelize (stores in the user table)
     db.User.update(
       survey,
-      {where: {
-        id: currentUser
-      }}
+      {
+        where: {
+          id: currentUser
+        }
+      }
     ).then(function (err) {
+      //response with re-direct routing
       res.json({
         "redirect": true,
         "redirect_url": "/matches"
@@ -91,54 +84,33 @@ module.exports = function (app) {
 
   });//end update api route
 
-  //this route displays the profile of a single match when chosen from the matches screen
 
-  
-  app.post("/transfer", authenticationMiddleware(), function(req, res) {
+  //this takes in user information from the appropriate button and transsfers them to the correct individual profile route
+  app.post("/transfer", authenticationMiddleware(), function (req, res) {
 
-  console.log()
-
-    newRoute = "/profile/" + req.body.id
-    
+    var newRoute = "/profile/" + req.body.id;
 
     res.json({
       "redirect": true,
       "redirect_url": newRoute
     });
-
-
   });//end get individual profile route
 
-  
 
 
-  //This route adds a review to the database and resends the user to the /profile/:id page
-  app.post("/review", authenticationMiddleware(), function(req, res) {
-   
 
-      db.Review.create(
-        req.body
-      ).then(function (err) {
-        
-       // if (err) throw err;
-        res.end();
-      /*res.json({
-        "redirect": true,
-        "redirect_url": "/profile/" + req.body.id
-      });*/
-    });
-
-      
-  });
+  //This route adds a review to the database and reloads the /profile/:id page
+  app.post("/review", authenticationMiddleware(), function (req, res) {
 
 
-  // Delete an example by id
-  app.delete("/api/examples/:id", function (req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function (dbExample) {
-      res.json(dbExample);
+    db.Review.create(
+      req.body
+    ).then(function (err) {
+      res.end();
     });
   });
-};
+
+}; // end module.exports
 
 
 passport.serializeUser(function (userId, done) {
@@ -150,7 +122,7 @@ passport.deserializeUser(function (userId, done) {
 });
 
 
-//call this function to allow access only to signed in and authenticated users.
+//Function to check authentication
 function authenticationMiddleware() {
   return (req, res, next) => {
 

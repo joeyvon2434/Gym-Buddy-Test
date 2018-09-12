@@ -1,3 +1,4 @@
+//log in user javascript file
 $("#login-button").on("click", function () {
     event.preventDefault();
 
@@ -7,8 +8,8 @@ $("#login-button").on("click", function () {
     currentUser.username = $("#email").val();
     currentUser.password = $("#password").val();
 
-    console.log(currentUser);
 
+    //AJAX call
     $.ajax({
         type: "POST",
         url: "/api/authenticateuser",

@@ -1,4 +1,4 @@
-
+//Javascript to create a new user
 $("#confirm-button").on("click", function (event) {
     event.preventDefault();
 
@@ -21,7 +21,7 @@ $("#confirm-button").on("click", function (event) {
             confirmPassword: confirmPassword
         }
 
-
+//AJAX call
         $.ajax("/api/createnewuser", {
             type: "POST",
             data: newUser,
@@ -30,7 +30,6 @@ $("#confirm-button").on("click", function (event) {
                     window.location.href = res.redirect_url
                 }
             }
-
         });
     }
 }); //end on click function

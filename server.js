@@ -9,7 +9,7 @@ var session = require("express-session");
 var SessionStore = require('express-session-sequelize')(session.Store);
 var passport = require("passport");
 var LocalStrategy = require('passport-local').Strategy;
-//var MySQLStore = require("express-mysql-session")(session);
+//var MySQLStore = require("express-mysql-session")(session); opted to sequelize session for Jaws DB deployment
 var bcrypt = require('bcrypt');
 
 
@@ -24,18 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(cookieParser());
- 
-//sets up approptiate to allow sessions to continue
-/*
-var options = {
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "workout_db",
-  port: process.env.dbport,
-};
-var sessionStore = new MySQLStore(options);
-*/
+
+//set up sessionStore
 var sessionStore = new SessionStore({
   db: db.sequelize
 });

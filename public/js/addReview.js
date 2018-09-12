@@ -1,40 +1,24 @@
 //this file adds a review to a specific user
 
-$("#add-review-button").on('click', function() {//rename button as necessary depending on handlebars file
+$("#add-review-button").on('click', function() {
     event.preventDefault();
 
     console.log("Star Value");
     var stars =  $("input[name='reviewStars']:checked").val();
     console.log(stars);
 
-    //pull in values for reviews here
-
-    //Uncomment when page works
+    //pull in user inputs for reviews here
     var newReview = {
         UserId: $(this).val(),
-        description: $("#description").val(), //possibly rename depending on handlebars
+        description: $("#description").val(), 
         rating: stars
 };
 
-    //temporary newReview variable for testing
-    /*var newReview = {
-        UserId: 1,
-        name: "Joe",
-        description: "This is a review",
-        rating: 5
-    };*/
-
-    console.log(newReview);
-
+//AJAX call
     $.ajax({
         method: "POST",
         url: "/review",
         data: newReview
-        /*success: function (res) {
-            if (res.redirect !== undefined) {
-                window.location.href = res.redirect_url
-            }
-        }*/
     }).then(function() {
         console.log("made it to reload")
         location.reload();
