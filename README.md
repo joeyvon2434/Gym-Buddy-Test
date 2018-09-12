@@ -1,6 +1,6 @@
 # Gym Buddy
 
-##Guest Login: 
+## Guest Login: 
 email: guest@guest.com
 password: guest
 
