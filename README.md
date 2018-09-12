@@ -4,6 +4,11 @@
 email: guest@guest.com
 password: guest
 
+## Original Group Project Repo
+https://github.com/victoriagoesplaces/projectTwo
+
+(I stored a copy on my repo to ensure it was available).
+
 ## Quick summary:
 Gym Buddy is a Node.js based web application designed to help users find a gym partner. The app is currently in a proof of concept stage, and would require many more users to match users properly.
 
