@@ -10,14 +10,14 @@ Gym Buddy is a Node.js based web application designed to help users find a gym p
 ## Purpose:
 This app was the second group project for the UCF coding Bootcamp. It matches users with similar work out habits and preferences. This app was created specifically to help people looking for gym partners.
 
-##Contributors: 
+## Contributors: 
 Front End: Victoria Gonzales, and Steven Martinez
 Back End: Christian Sneed, and Joseph Von Edwins
 
-##My Role:
+## My Role:
 Joseph Von Edwins: Back end routing, authentication implementation, and matching logic implementation.
 
-##Getting Started:
+## Getting Started:
 It's best to vist the deployed Heroku site at 
 https://guarded-hollows-27894.herokuapp.com/
 
@@ -35,10 +35,10 @@ Technologies:   Node.js
 The GitHub repository is located at 
 https://github.com/joeyvon2434/gym-buddy-test
 
-##Details:
+## Details:
 Upon loading, users are directed to sign up or sign. New users sign up, and are added to the users list, and automatically logged in and authenticated. They are then directed to a survey page to allow proper matching. Upon submitting the survey, the user's matches are displayed. Users who have already signed up are able to login using the login page, which then directs them to their matches upon successful login. From the matches page, each user can select a potential gym buddy, and routed to the selected profile. The user can look at previous reviews for the user in question to validate whether or not this particular person would be a good gym partner.
 
-##Potential Future Improvements: 
+## Potential Future Improvements: 
         1. Improve matching algorithm based on user input or focus group studies.
         2. Implement location matching for users.
         3. Develop sport specific matching: EX: to set up tennis matches, golf, basketball games, etc...
