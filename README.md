@@ -4,6 +4,13 @@
 email: guest@guest.com
 password: guest
 
+Individual copy: https://guarded-hollows-27894.herokuapp.com/
+Original Group Copy: https://pacific-headland-82730.herokuapp.com
+
+You may choose to sign up a new user as well. There is currently no validation on the email field, so any text will work.
+
+We recommend choosing all first, or all last answers on the survey to ensure matches are available on test runs.
+
 ## Original Group Project Repo
 https://github.com/victoriagoesplaces/projectTwo
 
